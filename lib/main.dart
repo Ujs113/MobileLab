@@ -35,6 +35,15 @@ String? nullChecker(value) {
 	return null;
 }
 
+String? emailChecker(value){
+	final RegExp regex = RegExp(r"[a-zA-Z0-9]+@[a-zA-Z]+");
+	if(!regex.hasMatch(value))
+	{
+		return '\nEnter a valid email';
+	}
+	return null;
+}
+
 bool isNumeric(String s) {
 	return double.tryParse(s) != null;
 }
@@ -70,7 +79,7 @@ class _UserFormState extends State<UserForm> {
 				TextFormField(
 					controller: emailController,
 					decoration: const InputDecoration(labelText: 'E- mail'),
-					validator: nullChecker,
+					validator: emailChecker,
 				),
 				TextFormField(
 					controller: registerController,
