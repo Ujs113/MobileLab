@@ -24,7 +24,8 @@ class HelloWorld extends StatelessWidget {
 	}
 }
 
-List exercises = [['Exercise 1', UserForm()], ['Exercise 2', Exercise2()]];
+// List exercises = [['Exercise 1', Exercise1()], ['Exercise 2', Exercise2()]];
+List exercises = [['Exercise 2', Exercise2()]];
 
 class Index extends StatefulWidget {
   const Index({Key? key}) : super(key: key);
