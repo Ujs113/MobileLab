@@ -43,20 +43,21 @@ class _Exercise3State extends State<Exercise3> {
         title: const Text('Exercise 3 - Calculator'),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget> [
           Expanded(
             child: Container(
               child: Column(
                 children: <Widget> [
                   Container(
-                    padding: const EdgeInsets.all(30),
+                    padding: const EdgeInsets.all(25),
                     alignment: Alignment.centerRight,
-                    child: Text(userInput, style: const TextStyle(fontSize: 18, color: Colors.white),),
+                    child: Text(userInput, style: const TextStyle(fontSize: 25, color: Colors.black),),
                   ),
                   Container(
                     padding: const EdgeInsets.all(30),
                     alignment: Alignment.centerRight,
-                    child: Text(answer, style: const TextStyle(fontSize: 30, color: Colors.white),),
+                    child: Text(answer, style: const TextStyle(fontSize: 30, color: Colors.black),),
                   )
                 ],
               )
@@ -67,7 +68,8 @@ class _Exercise3State extends State<Exercise3> {
             child: Container(
               child: GridView.builder(
                 itemCount: buttons.length,
-                itemBuilder: (BuildContext contest, int index) {
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+                itemBuilder: (BuildContext context, int index) {
                   if(index == 0){
                     return Button(
                       buttontapped: () {
@@ -77,24 +79,24 @@ class _Exercise3State extends State<Exercise3> {
                         });
                       },
                       buttonText: buttons[index],
-                      color: Colors.blue[50],
+                      color: Colors.blue[100],
                       textColor: Colors.black,
                     );
                   }else if(index == 1){
                     return Button(
                       buttonText: buttons[index],
-                      color: Colors.blue[50],
+                      color: Colors.blue[100],
                       textColor:Colors.black,
                     );
                   }else if(index == 2) {
                     return Button(
-                      buttonTapped: () {
+                      buttontapped: () {
                         setState(() {
                           userInput += buttons[index];
                         });
                       },
                       buttonText: buttons[index],
-                      color: Colors.blue[50],
+                      color: Colors.blue[100],
                       textColor: Colors.black,
                     );
                   }else if(index == 3) {
@@ -105,7 +107,7 @@ class _Exercise3State extends State<Exercise3> {
                         });
                       },
                       buttonText: buttons[index],
-                      dolor: Colors.blue[50],
+                      color: Colors.blue[100],
                       textColor: Colors.black,
                     );
                   }else if(index == 18){
@@ -128,8 +130,8 @@ class _Exercise3State extends State<Exercise3> {
                       },
                       buttonText: buttons[index],
                       color: isOperator(buttons[index])
-                          ? Colors.blueAccent
-                          : Colors.white,
+                          ? Colors.black
+                          : Colors.lightGreenAccent,
                       textColor: isOperator(buttons[index])
                           ? Colors.white
                           : Colors.black,
@@ -165,22 +167,21 @@ class _Exercise3State extends State<Exercise3> {
 class Button extends StatelessWidget {
 
   // declaring variables
-  var color;
-  var textColor;
+  final color;
+  final textColor;
   String buttonText;
-  var buttontapped;
+  final buttontapped;
 
   //Constructor
-  MyButton({this.color, this.textColor, this.buttonText, this.buttontapped});
+  Button({this.color, this.textColor, required this.buttonText, this.buttontapped});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: buttontapped,
       child: Padding(
         padding: const EdgeInsets.all(0.2),
         child: ClipRRect(
-          // borderRadius: BorderRadius.circular(25),
           child: Container(
             color: color,
             child: Center(
@@ -199,4 +200,3 @@ class Button extends StatelessWidget {
     );
   }
 }
-
