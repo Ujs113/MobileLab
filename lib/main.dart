@@ -4,6 +4,7 @@ import 'exercise_1.dart';
 import 'exercise_2.dart';
 import 'exercise_3.dart';
 import 'exercise_4.dart';
+import 'exercise_6.dart';
 
 void main() => runApp(const HelloWorld());
 
@@ -27,7 +28,7 @@ class HelloWorld extends StatelessWidget {
 }
 
 // List exercises = [['Exercise 1', Exercise1()], ['Exercise 2', Exercise2()]];
-List exercises = [['Exercise 2', Exercise2()], ['Exercise 3', Exercise3()], ['Exercise 4', Exercise4()]];
+List exercises = [['Exercise 2', Exercise2()], ['Exercise 3', Exercise3()], ['Exercise 4', Exercise4()], ['Exercise 6', Exercise6()]];
 
 class Index extends StatefulWidget {
   const Index({Key? key}) : super(key: key);
