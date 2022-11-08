@@ -34,18 +34,16 @@ class _Exercise6State extends State<Exercise6> {
     });
   }
 
-  Future<void> openFeed(String url) async {
-    if(await canLaunchUrlString(url)) {
-      await launchUrlString(url);
-      return;
-    }
-    updateTitle(feedOpenErrorMessage);
+  Future<void> openFeed(String? url) async {
+    await launchUrlString(url!);
+    return;
   }
 
   Future<RssFeed> loadFeed() async {
     try{
       final client = http.Client();
-      final response = await client.get(Uri.https(FEED_URL, 'jobs'));
+      final response = await client.get(Uri.https(FEED_URL, 'frontpage'));
+
       return RssFeed.parse(response.body);
     } catch (e) {
       // updateTitle(feedLoadErrorMessage);
@@ -63,6 +61,7 @@ class _Exercise6State extends State<Exercise6> {
       }
       updateFeed(result);
       updateTitle("Hacker News RSS Feed");
+      debugPrint(_feed.title);
     });
   }
 
@@ -70,7 +69,7 @@ class _Exercise6State extends State<Exercise6> {
   void initState() {
     super.initState();
     // _refreshKey = GlobalKey<RefreshIndicatorState>();
-    updateTitle('Exercise 4');
+    updateTitle('Exercise 6');
     load();
   }
 
@@ -79,7 +78,7 @@ class _Exercise6State extends State<Exercise6> {
   }
 
   body() {
-    return isFeedEmpty() ? const Center(child: CircularProgressIndicator()) : RefreshIndicator(key: _refreshKey, child: list(), onRefresh: load());
+    return isFeedEmpty() ? const Center(child: CircularProgressIndicator()) : RefreshIndicator(key: _refreshKey, child: list(), onRefresh: load);
   }
 
   list() {
@@ -87,29 +86,23 @@ class _Exercise6State extends State<Exercise6> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget> [
         Expanded(
-          flex: 1,
-          child: Container(
-            padding: EdgeInsets.all(10.0),
-            margin: EdgeInsets.only(left: 5.0, right: 5.0),
-            // decoration:
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Link: ${_feed.link}",
-                ),
-                Text(
-                  "Description: ${_feed.description}",
-                ),
-                Text(
-                  "Docs: ${_feed.docs}",
-                ),
-                Text(
-                  "Last Build Date: ${_feed.lastBuildDate}",
-                ),
-              ],
-            ),
+          flex: 3,
+          child: ListView.builder(
+            padding: EdgeInsets.all(5.0),
+            itemCount: _feed.items?.length,
+            itemBuilder: (BuildContext context, int index) {
+              final _item = _feed.items![index];
+              return Container (
+                margin: EdgeInsets.only(bottom: 10.0,),
+                child: ListTile(
+                  title: Text(" ${_item.title}"),
+                  subtitle: Text("${_item.pubDate}"),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  contentPadding: EdgeInsets.all(5.0),
+                  onTap: () => openFeed(_item.link)
+                )
+              );
+            }
           )
         )
       ]
