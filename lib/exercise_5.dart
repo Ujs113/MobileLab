@@ -15,86 +15,105 @@ class _Exercise5State extends State<Exercise5> {
   final firstnamecontroller = TextEditingController();
   final lastnamecontroller = TextEditingController();
 
-  final List<Map<String, dynamic>> listOfColumns = await users();
+  late List<Map<String, dynamic>> listOfColumns;
+
+  Future<List<Map<String, dynamic>>> initData() async {
+    var vals = await users();
+    return vals;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: firstnamecontroller,
-                    decoration: const InputDecoration(
-                      label: Text("Enter First Name"),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black,width: 2),
-                          borderRadius: BorderRadius.all(Radius.circular(10.0))
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black,width: 2),
-                          borderRadius: BorderRadius.all(Radius.circular(10.0))
-                      ),
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.all(10)),
-                  TextField(
-                    controller: lastnamecontroller,
-                    decoration: const InputDecoration(
-                      label: Text("Enter Last Name"),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black,width: 2),
-                          borderRadius: BorderRadius.all(Radius.circular(10.0))
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black,width: 2),
-                          borderRadius: BorderRadius.all(Radius.circular(10.0))
-                      ),
-                    ),
-                  )
-                ],
-              )
-          ),
-          ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  if(firstnamecontroller.text != null && lastnamecontroller.text != null) {
-                    listOfColumns.add({
-                      "Firstname": firstnamecontroller.text,
-                      "Lastname": lastnamecontroller.text
-                    });
-                  } else {
-
-
-                  }
-                });
-              },
-              child: const Text("Submit")
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: DataTable(
-                columns: const [
-                  DataColumn(label: Text("First Name")),
-                  DataColumn(label: Text("Last Name"))
-                ],
-                rows:
-                listOfColumns
-                    .map(
-                  ((element)=>DataRow(cells: <DataCell>[
-                    DataCell(Text(element["Firstname"].toString())),
-                    DataCell(Text(element["Lastname"].toString()))
-                  ],
-                  )),
-                ).toList()
-            ),
-          )
-        ],
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Exercise 5'),
       ),
-    );
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: initData(),
+        builder: (context, snapshot) {
+          if(!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
+          listOfColumns = snapshot.data!;
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: firstnamecontroller,
+                          decoration: const InputDecoration(
+                            label: Text("Enter First Name"),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black,width: 2),
+                                borderRadius: BorderRadius.all(Radius.circular(10.0))
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black,width: 2),
+                                borderRadius: BorderRadius.all(Radius.circular(10.0))
+                            ),
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.all(10)),
+                        TextField(
+                          controller: lastnamecontroller,
+                          decoration: const InputDecoration(
+                            label: Text("Enter Last Name"),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black,width: 2),
+                                borderRadius: BorderRadius.all(Radius.circular(10.0))
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black,width: 2),
+                                borderRadius: BorderRadius.all(Radius.circular(10.0))
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        if(firstnamecontroller.text != null && lastnamecontroller.text != null) {
+                          listOfColumns.add({
+                            "Firstname": firstnamecontroller.text,
+                            "Lastname": lastnamecontroller.text
+                          });
+                        } else {
+
+
+                        }
+                      });
+                    },
+                    child: const Text("Submit")
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: DataTable(
+                      columns: const [
+                        DataColumn(label: Text("First Name")),
+                        DataColumn(label: Text("Last Name"))
+                      ],
+                      rows:
+                      listOfColumns
+                          .map(
+                        ((element)=>DataRow(cells: <DataCell>[
+                          DataCell(Text(element["Firstname"].toString())),
+                          DataCell(Text(element["Lastname"].toString()))
+                        ],
+                        )),
+                      ).toList()
+                  ),
+                )
+              ],
+            ),
+          );
+        }),
+      );
   }
 }
 
@@ -157,3 +176,6 @@ Future<List<Map<String, dynamic>>> users() async{
   final List<Map<String, dynamic>> maps = await db.query('users');
   return maps;
 }
+
+
+

@@ -38,6 +38,7 @@ dependencies:
   url_launcher: ^6.1.6
   webfeed:
   http:
+  sqflite: ^2.0.3+1
 
 dev_dependencies:
   flutter_test:
